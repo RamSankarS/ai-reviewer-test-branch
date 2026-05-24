@@ -15,9 +15,19 @@ client = InferenceClient(
 
 def ai_review(pr_diff:str):
     try:
+
+        if not pr_diff:
+            return {
+                "healthScore": 0,
+                "summary": {
+                    "status": "blocked",
+                    "message": "No code changes detected"
+                }
+            }
+
         with open("/home/doffy18/projects/hackathon/ai-reviewer-test-branch/backend/prompts/review_prompt.txt","r") as f:
             chat_prompt = f.read()
-        prompt = chat_prompt.replace("{{pr_diff}}", pr_diff)
+        prompt = chat_prompt.replace("{{CODE_DIFF}}", pr_diff)
 
         response = client.chat.completions.create(model=MODEL_NAME,
             messages=[

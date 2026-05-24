@@ -4,15 +4,20 @@ from urllib.parse import urlparse
 
 def fetch_pr_files(pr_url: str):
 
-    # extract owner, repo, pr number
-    path_parts = urlparse(pr_url).path.strip("/").split("/")
+    path_parts = urlparse(pr_url).path.strip("/").split("/")     # extract owner, repo, pr number
+
+    if len(path_parts) < 4:
+        raise ValueError("Invalid GitHub PR URL")
+
+    if path_parts[2] != "pull":
+        raise ValueError("Not a pull request URL")
 
     owner = path_parts[0]
     repo = path_parts[1]
     pr_number = path_parts[3]
 
-    # github api url
-    api_url = f"https://api.github.com/repos/{owner}/{repo}/pulls/{pr_number}/files"
+    api_url = f"https://api.github.com/repos/{owner}/{repo}/pulls/{pr_number}/files"     # github api url
+
 
     response = requests.get(api_url)
 
