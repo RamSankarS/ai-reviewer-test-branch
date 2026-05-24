@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Home, GitPullRequest, BarChart2, Shield, Users, Settings, ChevronLeft, Menu } from 'lucide-react';
+// 1. Added LogOut to the imports here
+import { Home, GitPullRequest, BarChart2, Shield, Users, Settings, ChevronLeft, Menu, LogOut } from 'lucide-react';
 
-const Sidebar = ({ currentPage, setCurrentPage }) => {
+// 2. Added setPat to the props here
+const Sidebar = ({ currentPage, setCurrentPage, setPat }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  // Update the NavItem to handle onClick and dynamic active states
   const NavItem = ({ icon: Icon, label, id }) => {
     const isActive = currentPage === id;
     return (
@@ -42,17 +43,17 @@ const Sidebar = ({ currentPage, setCurrentPage }) => {
       
       {/* Navigation Links */}
       <nav className="flex-1 px-3 space-y-2 mt-2">
-    <NavItem icon={Home} label="Overview" id="overview" />
-    <NavItem icon={GitPullRequest} label="Pull Requests" id="pull-requests" />
-    {/* Keep these as dummy buttons for now */}
-    <NavItem icon={BarChart2} label="Analytics" id="analytics" />
-    <NavItem icon={Users} label="Team" id="team" />
-    <NavItem icon={Settings} label="Settings" id="settings" />
-  </nav>
+        <NavItem icon={Home} label="Overview" id="overview" />
+        <NavItem icon={GitPullRequest} label="Pull Requests" id="pull-requests" />
+        <NavItem icon={BarChart2} label="Analytics" id="analytics" />
+        <NavItem icon={Users} label="Team" id="team" />
+        <NavItem icon={Settings} label="Settings" id="settings" />
+      </nav>
       
       {/* User Profile Area */}
-      <div className="p-4 border-t border-slate-800">
-        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} p-2 hover:bg-slate-800 rounded-lg cursor-pointer transition-colors overflow-hidden`}>
+      <div className="p-4 border-t border-slate-800 space-y-2">
+        
+        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} p-2 rounded-lg overflow-hidden`}>
           <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold shrink-0">
             RS
           </div>
@@ -63,6 +64,17 @@ const Sidebar = ({ currentPage, setCurrentPage }) => {
             </div>
           )}
         </div>
+        <button
+          onClick={() => {
+            localStorage.removeItem('github_pat');
+            setPat(null);
+          }}
+          className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'justify-center gap-2'} px-4 py-2.5 rounded-lg text-rose-400 hover:bg-rose-500/10 transition-colors border border-transparent hover:border-rose-500/20`}
+          title="Disconnect Workspace"
+        >
+          <LogOut className="w-4 h-4 shrink-0" />
+          {!isCollapsed && <span className="text-sm font-medium">Disconnect</span>}
+        </button>
       </div>
       
     </aside>
