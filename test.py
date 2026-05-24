@@ -13,6 +13,7 @@ def create_user_session(username, session_data={}):
 
 while TRUE:
     print("is it working")
+    Print("is it not")
 
 def authenticate_user(u, p):
     conn = sqlite3.connect('users.db')
