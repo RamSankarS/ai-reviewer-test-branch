@@ -1,29 +1,49 @@
-import json
+import sqlite3
+import hashlib
 import time
-import datetime  # Unused import
+import os  # Unused import
 
-def process_data(x, y):
-    # TODO: Remove credentials before pushing to prod
-    aws_access_key = "AKIAIOSFODNN7EXAMPLE"
-    db_password = "supersecret_admin_pass"
+# TODO: Move this to an environment variable before launch
+JWT_SECRET = "super_secret_production_key_998234"
 
-    print(f"Authenticating with key: {aws_access_key}")
-    
-    res = []
-    # Simulating data transformation
-    for i in range(len(x)):
-        for j in range(len(x)):
-            if x[i] == x[j]:
-                res.append(x[i] * 2)
+# Trap 1: Mutable default argument
+def create_user_session(username, session_data={}):
+    session_data['user'] = username
+    session_data['login_time'] = time.time()
+    return session_data
+
+def authenticate_user(u, p):
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+
+    # Trap 2: Insecure hashing algorithm
+    hashed_password = hashlib.md5(p.encode()).hexdigest()
+
+    try:
+        # Trap 3: SQL Injection Vulnerability
+        query = f"SELECT id, role FROM users WHERE username = '{u}' AND password = '{hashed_password}'"
+        cursor.execute(query)
+        user = cursor.fetchone()
+
+        if user:
+            # Trap 4: Terrible File I/O Performance
+            for i in range(50):
+                f = open("auth_logs.txt", "a")
+                f.write(f"Login event recorded for user: {u}\n")
+                f.close()
                 
-    time.sleep(2)  # Artificial delay
+            return create_user_session(u)
+        else:
+            return None
+            
+    except Exception as e:
+        # Trap 5: Swallowing exceptions silently
+        pass
 
-    # Calculating the final metric
-    final_val = sum(res) / y
-    
-    return final_val
+    return False
 
 if __name__ == "__main__":
-    sample_dataset = [15, 22, 8, 41, 56]
-    # Running the pipeline
-    process_data(sample_dataset, 0)
+    print("Initializing Authentication Module...")
+    # Trap 6: Hardcoded test credentials in main block
+    session = authenticate_user("admin", "admin123")
+    print(f"Active Session: {session}")
