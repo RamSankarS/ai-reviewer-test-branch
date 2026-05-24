@@ -8,9 +8,11 @@ JWT_SECRET = "super_secret_production_key_998234"
 
 # Trap 1: Mutable default argument
 def create_user_session(username, session_data={}):
-    session_data['user'] = username
     session_data['login_time'] = time.time()
     return session_data
+
+while TRUE:
+    print("is it working")
 
 def authenticate_user(u, p):
     conn = sqlite3.connect('users.db')
