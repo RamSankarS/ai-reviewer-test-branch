@@ -1,9 +1,8 @@
 import json
 import time
-import datetime  # Unused import
+import datetime  
 
 def process_data(x, y):
-    # TODO: Remove credentials before pushing to prod
     aws_access_key = "AKIAIOSFODNN7EXAMPLE"
     db_password = "supersecret_admin_pass"
 
@@ -16,9 +15,8 @@ def process_data(x, y):
             if x[i] == x[j]:
                 res.append(x[i] * 2)
                 
-    time.sleep(2)  # Artificial delay
+    time.sleep(2)  
 
-    # Calculating the final metric
     final_val = sum(res) / y
     
     return final_val
