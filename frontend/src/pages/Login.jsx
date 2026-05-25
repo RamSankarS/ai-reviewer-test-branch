@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Key, User, ArrowRight, HelpCircle, ExternalLink, Loader2, AlertCircle } from 'lucide-react';
+import { Megaphone, Key, User, ArrowRight, HelpCircle, ExternalLink, Loader2, AlertCircle } from 'lucide-react';
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -20,14 +20,11 @@ const Login = ({ onLogin }) => {
     setError(null);
 
     try {
-      // --> REPLACE THIS URL WITH KASHI'S ACTUAL ENDPOINT <--
-      const response = await fetch('YOUR_BACKEND_URL_HERE/api/verify-token', {
+      const response = await fetch('https://giddily-status-energize.ngrok-free.dev/save-token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${cleanPat}` 
         },
-        // We are now sending BOTH the username and the token to Kashi
         body: JSON.stringify({ 
           username: cleanUsername, 
           token: cleanPat 
@@ -37,12 +34,9 @@ const Login = ({ onLogin }) => {
       if (!response.ok) {
         throw new Error('Invalid credentials or backend connection failed.');
       }
-
-      // Save BOTH to the browser so the rest of your app can use them
       localStorage.setItem('github_username', cleanUsername);
       localStorage.setItem('github_pat', cleanPat);
       
-      // Tell App.jsx we are successfully logged in
       onLogin(cleanPat);
       
     } catch (err) {
@@ -57,23 +51,34 @@ const Login = ({ onLogin }) => {
     <div className="min-h-screen bg-[#0F172A] flex flex-col justify-center items-center p-4">
       <div className="w-full max-w-md bg-[#1E293B] border border-slate-700/50 rounded-2xl shadow-2xl p-8 animate-in fade-in zoom-in duration-500">
         
-        {/* Brand Logo */}
+        {/* Brand Logo - Acoustic Blast Theme */}
         <div className="flex justify-center mb-6">
-          <div className="bg-slate-800 p-3.5 rounded-xl border border-slate-700 shadow-inner">
-            <Shield className="w-10 h-10 text-emerald-400" />
+          <div className="relative bg-slate-800 p-3.5 rounded-xl border border-slate-700 shadow-inner group">
+            <div className="absolute inset-0 rounded-xl bg-emerald-500/20 animate-ping opacity-75 interaction-ping pointer-events-none duration-1000" />
+            <div className="absolute inset-0 rounded-xl bg-emerald-500/10 animate-pulse pointer-events-none" />
+            <Megaphone className="w-10 h-10 text-emerald-400 relative z-10 transform -rotate-12 transition-transform group-hover:rotate-0 duration-300" />
           </div>
         </div>
         
         {/* Header Text */}
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-white mb-2">Welcome to CodeGuard AI</h2>
-          <p className="text-slate-400 text-sm">Connect your GitHub account to begin monitoring.</p>
+        <div className="text-center mb-10 flex flex-col items-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 mb-5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] uppercase font-bold tracking-widest shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            Secure Connection
+          </div>
+          <h2 className="text-3xl font-extrabold text-white mb-3 tracking-tight">
+            Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 drop-shadow-sm">Alaris PR Lens</span>
+          </h2>
+          <p className="text-slate-400 text-sm max-w-[280px] mx-auto leading-relaxed">
+            Authenticate your GitHub workspace to initialize real-time PR analysis.
+          </p>
         </div>
 
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
-          
-          {/* NEW: Username Input */}
           <div className="space-y-2">
             <label className="block text-sm font-medium text-slate-300">
               GitHub Username
@@ -92,7 +97,6 @@ const Login = ({ onLogin }) => {
             </div>
           </div>
 
-          {/* PAT Input */}
           <div className="space-y-2">
             <label className="block text-sm font-medium text-slate-300">
               Personal Access Token
@@ -111,7 +115,6 @@ const Login = ({ onLogin }) => {
             </div>
           </div>
 
-          {/* Dynamic Error Message */}
           {error && (
             <div className="flex items-center gap-2 text-rose-400 text-sm bg-rose-500/10 p-3 rounded-lg border border-rose-500/20">
               <AlertCircle className="w-4 h-4 shrink-0" />
@@ -137,7 +140,6 @@ const Login = ({ onLogin }) => {
           </button>
         </form>
 
-        {/* Interactive Help Section */}
         <div className="mt-6 border-t border-slate-800 pt-6">
           <button 
             onClick={() => setShowHelp(!showHelp)}
