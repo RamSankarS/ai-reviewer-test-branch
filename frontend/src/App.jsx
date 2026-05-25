@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Layout from './components/layout/Layout';
 import Dashboard from './pages/Dashboard';
 import PullRequests from './pages/PullRequests';
@@ -9,14 +9,32 @@ const App = () => {
   const [pat, setPat] = useState(localStorage.getItem('github_pat'));
   const [currentPage, setCurrentPage] = useState('overview');
 
+  // Dedicated login handler (Login.jsx calls this on success)
+  const handleLoginSuccess = (token) => {
+    setPat(token);
+    setCurrentPage('overview'); // Guarantee they land on the dashboard!
+  };
+
+  // Dedicated logout handler
+  const handleLogout = () => {
+    // Wipe everything from browser memory
+    localStorage.removeItem('github_pat');
+    localStorage.removeItem('github_username');
+    
+    // Reset React state
+    setPat(null);
+    setCurrentPage('overview'); 
+  };
+
   // If there is no PAT, lock them on the Login screen
   if (!pat) {
-    return <Login onLogin={setPat} />;
+    return <Login onLogin={handleLoginSuccess} />;
   }
 
   // Otherwise, render the main app
   return (
-    <Layout currentPage={currentPage} setCurrentPage={setCurrentPage} setPat={setPat}>
+    // Notice we changed setPat={setPat} to onLogout={handleLogout}
+    <Layout currentPage={currentPage} setCurrentPage={setCurrentPage} onLogout={handleLogout}>
       {currentPage === 'overview' && <Dashboard />}
       {currentPage === 'pull-requests' && <PullRequests />}
     </Layout>

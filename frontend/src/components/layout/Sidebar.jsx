@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-// 1. Added LogOut to the imports here
-import { Home, GitPullRequest, BarChart2, Shield, Users, Settings, ChevronLeft, Menu, LogOut } from 'lucide-react';
+import { Home, GitPullRequest, BarChart2, Megaphone, Users, Settings, ChevronLeft, Menu, LogOut } from 'lucide-react';
 
-// 2. Added setPat to the props here
-const Sidebar = ({ currentPage, setCurrentPage, setPat }) => {
+const Sidebar = ({ currentPage, setCurrentPage, onLogout }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const storedUsername = localStorage.getItem('github_username') || 'Developer';
+  const initials = storedUsername.substring(0, 2).toUpperCase();
 
   const NavItem = ({ icon: Icon, label, id }) => {
     const isActive = currentPage === id;
@@ -35,10 +36,10 @@ const Sidebar = ({ currentPage, setCurrentPage, setPat }) => {
         {isCollapsed ? <Menu className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
       </button>
 
-      {/* Brand Logo Area */}
+      {/* Brand Logo Area - Updated to Alaris Branding */}
       <div className={`p-6 flex items-center ${isCollapsed ? 'justify-center px-0' : 'gap-3'} h-20 overflow-hidden`}>
-        <Shield className="w-8 h-8 text-emerald-400 shrink-0" />
-        {!isCollapsed && <span className="text-xl font-bold text-white whitespace-nowrap">CodeGuard <span className="text-emerald-400">AI</span></span>}
+        <Megaphone className="w-8 h-8 text-emerald-400 shrink-0 transform -rotate-12" />
+        {!isCollapsed && <span className="text-xl font-bold text-white whitespace-nowrap">Alaris <span className="text-emerald-400">PR LENS</span></span>}
       </div>
       
       {/* Navigation Links */}
@@ -54,21 +55,20 @@ const Sidebar = ({ currentPage, setCurrentPage, setPat }) => {
       <div className="p-4 border-t border-slate-800 space-y-2">
         
         <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} p-2 rounded-lg overflow-hidden`}>
-          <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold shrink-0">
-            RS
+          <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold shrink-0">
+            {initials}
           </div>
           {!isCollapsed && (
-            <div className="whitespace-nowrap">
-              <p className="text-sm font-medium text-white">Ram S.</p>
-              <p className="text-xs text-slate-500">Vortax Dev Team</p>
+            <div className="whitespace-nowrap overflow-hidden">
+              <p className="text-sm font-medium text-white truncate w-32">{storedUsername}</p>
+              <p className="text-xs text-slate-500">Connected Workspace</p>
             </div>
           )}
         </div>
+        
+        {/* Disconnect Button - Now uses onLogout prop */}
         <button
-          onClick={() => {
-            localStorage.removeItem('github_pat');
-            setPat(null);
-          }}
+          onClick={onLogout}
           className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'justify-center gap-2'} px-4 py-2.5 rounded-lg text-rose-400 hover:bg-rose-500/10 transition-colors border border-transparent hover:border-rose-500/20`}
           title="Disconnect Workspace"
         >
