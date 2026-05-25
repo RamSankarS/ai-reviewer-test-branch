@@ -36,7 +36,7 @@ Stop hardcoded secrets, SQL injections, and logic bugs *before* they merge.
 
 ## 🚀 Getting Started
 
-To run Alaris MergeGuard locally for development or demonstration purposes, you will need to run both the frontend and backend servers simultaneously.
+To run Alaris PR Lens locally for development or demonstration purposes, you will need to run both the frontend and backend servers simultaneously.
 
 ### Prerequisites
 * Node.js (v18+)
