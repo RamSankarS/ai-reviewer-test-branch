@@ -52,3 +52,29 @@ cd backend
 pip install -r requirements.txt
 # Start the FastAPI server (adjust based on your specific entry point)
 uvicorn main:app --reload --port 8000
+```
+
+### 2. Once Server is running, expose it to internet so github can reach it
+
+```bash 
+ngrok http 8000
+```
+
+### 3. Navigate to frontend directory, install dependencies and start vite development server
+
+```bash 
+cd frontend
+npm install
+npm run dev
+```
+## 🎮 How to Use (Demo Flow)
+
+1. **Connect Workspace:** Open the React frontend (`localhost:5173`), enter your GitHub Username, and paste your scoped PAT.
+2. **Setup Webhook:** In your target GitHub repository, go to `Settings > Webhooks`, click **Add webhook**, and paste your `ngrok` URL appended with your payload route (e.g., `/webhook`). Set Content type to `application/json` and select **Pull requests**.
+3. **Trigger Analysis:** Create a new branch, write some code (or inject a test vulnerability), and open a Pull Request.
+4. **Watch it Work:** Alaris will intercept the webhook, analyze the diff, and push the health metrics straight to your live dashboard.
+
+---
+
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
