@@ -6,12 +6,11 @@ const StatCard = ({ title, value, icon: Icon, iconColor }) => {
       <div>
         <p className="text-sm font-medium text-slate-400">{title}</p>
         <h3 className="text-2xl font-bold text-white mt-1 transition-all">
-          {/* We use a fallback of 0 just in case the data is still loading */}
           {value !== undefined ? value : 0}
         </h3>
       </div>
       
-      {/* The icon container automatically adopts the color we pass to it */}
+   
       <div className={`p-3 rounded-lg bg-slate-800/80 border border-slate-700/50 ${iconColor} group-hover:scale-110 transition-transform`}>
         <Icon className="w-5 h-5" />
       </div>

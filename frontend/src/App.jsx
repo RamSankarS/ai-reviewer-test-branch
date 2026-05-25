@@ -9,13 +9,11 @@ const App = () => {
   const [pat, setPat] = useState(localStorage.getItem('github_pat'));
   const [currentPage, setCurrentPage] = useState('overview');
 
-  // Dedicated login handler (Login.jsx calls this on success)
   const handleLoginSuccess = (token) => {
     setPat(token);
-    setCurrentPage('overview'); // Guarantee they land on the dashboard!
+    setCurrentPage('overview'); 
   };
 
-  // Dedicated logout handler
   const handleLogout = () => {
     // Wipe everything from browser memory
     localStorage.removeItem('github_pat');
@@ -33,7 +31,6 @@ const App = () => {
 
   // Otherwise, render the main app
   return (
-    // Notice we changed setPat={setPat} to onLogout={handleLogout}
     <Layout currentPage={currentPage} setCurrentPage={setCurrentPage} onLogout={handleLogout}>
       {currentPage === 'overview' && <Dashboard />}
       {currentPage === 'pull-requests' && <PullRequests />}

@@ -2,13 +2,13 @@ import React from 'react';
 import { GitBranch } from 'lucide-react';
 
 const RepoList = ({ data }) => {
-  // 1. Extract the live health score for the current workspace
+
   const health = data?.healthScore || 0;
   
-  // 2. Grab the username to make it look personalized
+
   const username = localStorage.getItem('github_username') || 'Active';
 
-  // 3. Dynamic color logic for the mini progress bar
+
   let colorClass = 'bg-slate-500';
   if (health >= 80) colorClass = 'bg-emerald-400';
   else if (health >= 50) colorClass = 'bg-amber-400';
@@ -26,7 +26,7 @@ const RepoList = ({ data }) => {
       
       <div className="space-y-2 flex-1 min-h-0 overflow-y-auto">
         
-        {/* The Live Active Repository Card */}
+
         <div className="flex items-center justify-between p-2.5 bg-slate-800/30 rounded-lg border border-slate-700/50 shadow-sm">
           <div className="flex items-center gap-2 min-w-0">
             <GitBranch className={`w-4 h-4 shrink-0 ${health >= 80 ? 'text-emerald-400' : health >= 50 ? 'text-amber-400' : 'text-rose-500'}`} />
@@ -46,7 +46,7 @@ const RepoList = ({ data }) => {
           </div>
         </div>
         
-        {/* The Hackathon Filler Box */}
+
         <div className="flex items-center justify-center p-3 rounded-lg border border-dashed border-slate-700/40 text-[10px] text-slate-500 font-medium">
           Awaiting additional repositories...
         </div>

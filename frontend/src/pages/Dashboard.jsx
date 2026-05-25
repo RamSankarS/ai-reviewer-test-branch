@@ -7,7 +7,6 @@ import RepoList from '../components/dashboard/RepoList';
 import { Megaphone, Bug, Zap, Activity, Wifi, WifiOff, GitPullRequest } from 'lucide-react';
 
 const Dashboard = () => {
-  // 1. Initialize state from LocalStorage to survive page switches
   const [allReviews, setAllReviews] = useState(() => {
     const saved = localStorage.getItem('alaris_reviews');
     return saved ? JSON.parse(saved) : [];
@@ -15,8 +14,6 @@ const Dashboard = () => {
   
   const [connectionStatus, setConnectionStatus] = useState('connecting');
 
-  // 2. Derive current view and total count
-  // We take the 0th index as the most recent "Current" scan
   const dashboardData = allReviews.length > 0 ? allReviews[0] : null;
   const totalScanned = allReviews.length;
 
@@ -35,10 +32,9 @@ const Dashboard = () => {
       ws.onmessage = (event) => {
         try {
           const liveData = JSON.parse(event.data);
-          // Extract the review object if Kashi wrapped it
+
           const newReview = liveData.review || liveData;
 
-          // 3. PERSISTENCE LOGIC: Append to history, don't overwrite
           setAllReviews(prev => {
             const updated = [newReview, ...prev];
             localStorage.setItem('alaris_reviews', JSON.stringify(updated));
@@ -129,7 +125,6 @@ const Dashboard = () => {
       ) : (
         <div className="flex flex-col h-full gap-4 animate-in fade-in zoom-in-95 duration-500">
           <div className="grid grid-cols-4 gap-4 shrink-0">
-            {/* 🚨 DYNAMIC: Uses allReviews.length */}
             <StatCard title="Total PRs Scanned" value={totalScanned} icon={Activity} iconColor="text-emerald-400" />
             <StatCard title="Vulnerabilities" value={dashboardData?.metrics?.vulnerabilities || 0} icon={Megaphone} iconColor="text-rose-500" />
             <StatCard title="Logic Bugs" value={dashboardData?.metrics?.logicBugs || 0} icon={Bug} iconColor="text-amber-400" />
@@ -139,7 +134,6 @@ const Dashboard = () => {
           <div className="flex-1 grid grid-cols-2 gap-4 min-h-0 pb-2">
             <VulnerabilityChart data={dashboardData} />
             <HealthGauge data={dashboardData} />
-            {/* 🚨 Feed the history into ActivityFeed */}
             <ActivityFeed data={dashboardData} history={allReviews} />
             <RepoList data={dashboardData} />
           </div>

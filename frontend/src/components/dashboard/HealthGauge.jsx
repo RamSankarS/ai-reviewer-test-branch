@@ -33,19 +33,19 @@ const HealthGauge = ({ data }) => {
       
       <div className="relative flex items-center justify-center flex-1 w-full min-h-0 py-2">
         <svg className="transform -rotate-90 w-36 h-36">
-          {/* Background Track */}
+
           <circle 
             cx="72" cy="72" r={radius} 
             stroke="currentColor" strokeWidth="10" fill="transparent" 
             className="text-slate-700/50" 
           />
-          {/* Animated Progress Track */}
+
           <circle 
             cx="72" cy="72" r={radius} 
             stroke="currentColor" strokeWidth="10" fill="transparent" 
             strokeDasharray={circumference} 
             strokeDashoffset={strokeDashoffset} 
-            // Notice how we dynamically inject the colorClass here!
+
             className={`${colorClass} transition-all duration-1000 ease-out`} 
           />
         </svg>
@@ -58,7 +58,7 @@ const HealthGauge = ({ data }) => {
          <p className="text-xs text-slate-400">
            Status: <span className={`${colorClass} font-semibold uppercase tracking-wider`}>{statusDisplay}</span>
          </p>
-         {/* Bonus: We display the AI's short summary message right under the gauge! */}
+
          <p className="text-[10px] text-slate-500 truncate px-2" title={message}>
            {message}
          </p>
