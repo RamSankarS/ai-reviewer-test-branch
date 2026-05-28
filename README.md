@@ -54,6 +54,94 @@ pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
 ```
 
+
+## Expose Backend to GitHub Using ngrok
+
+GitHub webhooks cannot reach your local machine directly.
+Use ngrok to create a temporary public URL that tunnels requests to your local FastAPI server.
+
+### Start ngrok
+
+Open a **new terminal** and run:
+
+```bash
+ngrok http 8000
+```
+
+You will see output similar to:
+
+```bash
+Forwarding  https://abc123.ngrok-free.app -> http://localhost:8000
+```
+
+Copy the generated HTTPS URL:
+
+```bash
+https://abc123.ngrok-free.app
+```
+
+This URL will be used inside your GitHub repository webhook settings.
+
+> ⚠️ Every time ngrok restarts, the generated URL changes unless you use a reserved domain.
+
+---
+
+## Connect GitHub Webhook
+
+Go to your target repository on [GitHub](https://github.com/?utm_source=chatgpt.com) and open:
+
+```text
+Settings → Webhooks → Add webhook
+```
+
+Fill the webhook form like this:
+
+### Payload URL
+
+Append your backend webhook route to the ngrok URL:
+
+```bash
+https://abc123.ngrok-free.app/github-webhook
+```
+
+### Content Type
+
+```text
+application/json
+```
+
+### Events
+
+Select:
+
+```text
+Let me select individual events
+```
+
+Then enable:
+
+```text
+Pull requests
+```
+
+### Active
+
+Make sure the webhook is marked as:
+
+```text
+Active ✅
+```
+
+Finally, click:
+
+```text
+Add webhook
+```
+
+Once added successfully, GitHub will begin sending PR events directly to your local FastAPI backend through ngrok.
+
+
+
 ### 2. Once Server is running, expose it to internet so github can reach it
 
 ```bash 
